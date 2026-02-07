@@ -1,1 +1,0 @@
-This repository will be used to do hands on in Data Engineering Zoomcamp 2026
