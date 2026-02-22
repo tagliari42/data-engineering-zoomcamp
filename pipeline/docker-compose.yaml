@@ -20,7 +20,48 @@ services:
     ports:
       - "8085:80"
 
+  ingest_yellow:
+      image: taxi_ingest:v001
+      depends_on:
+        - pgdatabase
+      command: >
+        ingest_data.py
+        --pg-user=root
+        --pg-pass=root
+        --pg-host=pgdatabase
+        --pg-port=5432
+        --pg-db=ny_taxi
+        --target-table=yellow_taxi_trips
+      profiles:
+        - ingest
 
+  ingest_zones:
+      image: taxi_ingest:v001
+      depends_on:
+        - pgdatabase
+      command: >
+        ingest_zones.py
+        --pg-user=root
+        --pg-pass=root
+        --pg-host=pgdatabase
+        --pg-port=5432
+        --pg-db=ny_taxi
+      profiles:
+        - ingest
+
+  ingest_green:
+      image: taxi_ingest:v001
+      depends_on:
+        - pgdatabase
+      command: >
+        ingest_data_3.py
+        --pg-user=root
+        --pg-pass=root
+        --pg-host=pgdatabase
+        --pg-port=5432
+        --pg-db=ny_taxi
+      profiles:
+        - ingest
 
 volumes:
   ny_taxi_postgres_data:
